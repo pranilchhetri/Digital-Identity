@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Digital Identity</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="w3.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<style>
+    body{
+        background-color:#e6eaee;
+    }
+    .text{
+
+  font-family: Roboto, sans-serif;
+  font-size: 5 em;
+  font-weight: 200;
+  line-height: 1em;
+  letter-spacing: 0.34em;
+  color: #132c56;
+  display: inline-block;
+  margin-top: -0.7em;
+  padding: 0.65em 0 0.65em 0.7em;
+
+    }
+    #styl{
+
+  font-family: Roboto Condensed, sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  color: #555;
+  font-weight: 60;
+  
+
+    }
+</style>
+</head>
+<body>
+
+    
+
+<div class="container-fluid" style="background-color: #e6eaee;">
+    <div class="row">
+        
+        <div class="col-md-8">
+            <div style="position: relative;left: 250px; top:80px;">
+                <img style="width: 300px; height: auto;" src="ripple.gif">
+            </div>
+            <div>
+                <h4 class="text" style="position: absolute; top:400px; left: 70px;">
+                IMMUTABLE</h4>
+                <h4 class="text" style="position: absolute; top:400px; left: 310px;">
+                    PERMANENT
+                </h4>
+                <h4 class="text" style="position: absolute; top:400px; left: 550px;">
+                    ENHANCED PRIVACY
+                </h4>
+            </div>
+            
+        </div>
+        <div class="col-md-4">
+            <div class= "w3-card-4 w3-white w3-round-xlarge" style="padding: 30px; padding-bottom: 100px;">
+            <h1 id="styl">Student entry</h1>
+        <span id="countIns"></span>
+
+        <h2 id="student"></h2>
+        <span id="insTrans"></span>
+        <hr>
+
+        <img id="loader" src="loader.gif">
+
+        <div class="form-group">
+      <label>Roll No:</label>
+      <input type="text" class="form-control" id="rollNo" name="rollNo"  placeholder="Enter Roll Number">
+    </div>
+    <div class="form-group">
+      <label>Hash:</label>
+      <input type="text" class="form-control" id="hash" name="hash"  placeholder="Enter Hash">
+    </div>
+    
+        
+        
+        <button class="btn success" id="button" type="submit" style="margin-top: 20px;">Update Student</button>
+       </div>
+
+        </div>
+    </div>
+
+        
+    </div>
+    <style>
+        .btn {
+  border: 1px solid white;
+  border-radius: 50px;
+  background-color: transparent;
+  color: #132c56;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+   position: absolute;
+    z-index: 1;
+}
+
+/* Green */
+.success {
+  border-color: #132c56;
+  color: #132c56;
+}
+
+.success:hover{
+  background-color:#132c56;
+    color:white;
+}
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        console.log($)
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+           web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        }
+
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+
+        var StudentContract = web3.eth.contract([
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_address",
+                "type": "address"
+            },
+            {
+                "name": "_rollNo",
+                "type": "string"
+            },
+            {
+                "name": "_hash",
+                "type": "string"
+            }
+        ],
+        "name": "setStudent",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "rollNo",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "name": "hash",
+                "type": "string"
+            }
+        ],
+        "name": "studentInfo",
+        "type": "event"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "countStudents",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "getStudent",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            },
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "getStudents",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "studentAccts",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+]);
+
+        var Digitalid = StudentContract.at('0x929d492ae9a57b976873a707167b610a1dd7d703');
+
+        var StudentEvent = Digitalid.studentInfo({},'latest');
+
+        StudentEvent.watch(function (err, result) {
+            if (!err) {
+                if (result.blockHash != $("#instrans").html()) 
+                    $("#loader").hide();
+                
+               // $("#insTrans").html('Block hash: ' +result.blockHash);
+                //$("#student").html(result.args.rollNo +  ' (' + result.args.hash );
+                alert(result.args.rollNo+ ' is encoded in Blockchain with hash'+result.blockHash+'and address'+result.address);
+                
+                $.ajax({
+                    url:'https://ma-gar.com/blockchain/validate.php',
+                    type:'post',
+                     data:{
+                         rollNo:result.args.rollNo,
+                        g_hash:result.args.hash,
+                        ib_hash:result.blockHash,
+                        b_address:result.address},
+                    dataType:'json',
+                   
+                    success:function(data){
+                        alert("Submitted Successfully");
+                    }
+                    });
+                }    
+
+
+                //var obj ={"fname":result.args.fName,"lname":result.args.lName,"age":result.args.age};
+                //var myJson=JSON.stringify(obj);
+                //document.getElementById('jsons')=myJson;
+             else {
+                $("#loader").hide();
+            }
+        });
+
+        Digitalid.countStudents((err, res) => {
+            if (res)
+                $("#countIns").html(res.c + ' Students in Blockchain'); 
+        });
+
+
+       $("#button").click(function() {
+            $("#loader").show();
+            Digitalid.setStudent(web3.eth.defaultAccount, $("#rollNo").val(), $("#hash").val(), (err, res) => {
+                if (err)
+                    $("#loader").hide();
+            });
+        });
+
+    </script>
+
+</body>
+</html>
